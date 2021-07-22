@@ -27,3 +27,10 @@ Tests for this project use the Unittests library. All tests can be found in the 
 ## Deploying to AWS
 
 There is a simple script called `deploy.py` that will create a .zip for deployment to AWS. This script uses the dependencies that are saved in dependancies.zip. If dependancies have since been updated, please update this zip. Once the `SRAT.zip` has been created, upload it to AWS lambda.
+
+## Running the Jupyter Notebook
+
+There is a simple demonstration called `WikiSRAT_Demo.ipynb` that will link to a database of pre-modeled results from GWLF-E. This script uses the dependencies that are saved in `WikiSRAT.yml`. To restore this environment, follow the below example. For this, you will need to have recieved a config file from ANS that has the login information.
+```
+conda env create -f WikiSRAT.yml
+```

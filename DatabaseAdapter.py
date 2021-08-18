@@ -6,11 +6,16 @@ from constants import comid_returned_column_numbers
 
 
 class DatabaseAdapter:
-    def __init__(self, db_in, user_in, host_in, port_in, password_in):
+    def __init__(self, db_in, user_in, host_in, port_in, password_in, flag_in):
         try:
             self.conn = psycopg2.connect(database=db_in, user=user_in, host=host_in, port=port_in, password=password_in)
         except psycopg2.OperationalError as e:
             raise AttributeError("unable to connect to datbase")
+        try:
+            if flag_in is None:
+                flag_in = 'base'
+        except Exception as e:
+            print('No flag for base vs BMPs added in given, defaulting to base routine.')
 
     @classmethod
     def python_to_array(self, python_object):
@@ -68,7 +73,10 @@ class DatabaseAdapter:
 
     def srat_nhd(self, input_array):
         cur = self.conn.cursor()
-        cur.callproc('wikiwtershed.srat_nhd', input_array)
+        if flag_in == 'base':
+            cur.callproc('wikiwtershed.srat_nhd', input_array)
+        elif flag_in == 'restoration':
+            cur.callproc('wikiwtershed.srat_nhd_restoration', input_array)
         return self.comid_array_to_python(cur.fetchall())
 
     def srat_huc12(self, input_array):

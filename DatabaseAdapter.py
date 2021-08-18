@@ -16,7 +16,6 @@ class DatabaseAdapter:
                 self.flag_in = 'base'
             else:
                 self.flag_in = flag_in
-            print(self.flag_in)
         except Exception as e:
             raise print('No flag for base vs BMPs added in given, defaulting to base routine.')
 
@@ -77,9 +76,9 @@ class DatabaseAdapter:
 
     def srat_nhd(self, input_array):
         cur = self.conn.cursor()
-        if flag_in == 'base':
+        if self.flag_in == 'base':
             cur.callproc('wikiwtershed.srat_nhd', input_array)
-        elif flag_in == 'restoration':
+        elif self.flag_in == 'restoration':
             cur.callproc('wikiwtershed.srat_nhd_restoration', input_array)
         return self.comid_array_to_python(cur.fetchall())
 

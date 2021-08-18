@@ -6,11 +6,19 @@ from constants import comid_returned_column_numbers
 
 
 class DatabaseAdapter:
-    def __init__(self, db_in, user_in, host_in, port_in, password_in):
+    def __init__(self, db_in, user_in, host_in, port_in, password_in, flag_in):
         try:
             self.conn = psycopg2.connect(database=db_in, user=user_in, host=host_in, port=port_in, password=password_in)
         except psycopg2.OperationalError as e:
             raise AttributeError("unable to connect to datbase")
+        try:
+            if flag_in is None:
+                self.flag_in = 'base'
+            else:
+                self.flag_in = flag_in
+            print(self.flag_in)
+        except Exception as e:
+            raise print('No flag for base vs BMPs added in given, defaulting to base routine.')
 
     @classmethod
     def python_to_array(self, python_object):

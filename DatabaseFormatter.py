@@ -8,7 +8,12 @@ class DatabaseFormatter:
         parsed = []
         for i in range(0, len(input_dbdata)):
             _temp = {}
-            _temp['huc12'] = input_dbdata[i][1]
+            if len(input_dbdata[0][1]) == 12:
+                _temp['huc12'] = input_dbdata[i][1]
+            elif len(input_dbdata[0][1]) == 10:
+                _temp['huc10'] = input_dbdata[i][1]
+            elif len(input_dbdata[0][1]) == 8:
+                _temp['huc08'] = input_dbdata[i][1]
 
             _temp['tpload_hp'] = float(input_dbdata[i][33])
             _temp['tpload_crop'] = float(input_dbdata[i][34])
@@ -24,7 +29,11 @@ class DatabaseFormatter:
             _temp['tpload_streambank'] = float(input_dbdata[i][44])
             _temp['tpload_subsurface'] = float(input_dbdata[i][45])
             _temp['tpload_pointsource'] = float(input_dbdata[i][46])
-            _temp['tpload_septics'] = float(input_dbdata[i][47])
+            try:
+                _temp['tpload_septics'] = float(input_dbdata[i][47])
+            except Exception as e:
+                print(e)
+                _temp['tpload_septics'] = float(0.0)
 
             _temp['tnload_hp'] = float(input_dbdata[i][18])
             _temp['tnload_crop'] = float(input_dbdata[i][19])
@@ -40,7 +49,11 @@ class DatabaseFormatter:
             _temp['tnload_streambank'] = float(input_dbdata[i][29])
             _temp['tnload_subsurface'] = float(input_dbdata[i][30])
             _temp['tnload_pointsource'] = float(input_dbdata[i][31])
-            _temp['tnload_septics'] = float(input_dbdata[i][32])
+            try:
+                _temp['tnload_septics'] = float(input_dbdata[i][32])
+            except Exception as e:
+                print('e')
+                _temp['tnload_septics'] = float(0.0)
 
             _temp['tssload_hp'] = float(input_dbdata[i][3])
             _temp['tssload_crop'] = float(input_dbdata[i][4])

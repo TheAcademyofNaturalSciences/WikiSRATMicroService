@@ -27,18 +27,24 @@ class DatabaseMakeTable:
                        'tnloadate_conc numeric(20,4),tssloadrate_total numeric(20,4),tssloadate_conc numeric(20,4),' \
                        'catchment_hectares numeric(20,4),watershed_hectares numeric(20,4),tploadrate_total_ws numeric(20,4),' \
                        'tnloadrate_total_ws numeric(20,4),tssloadrate_total_ws numeric(20,4),maflowv numeric(20,4),' \
-                       'geom geometry(MultiLineStringZM,32618),catchment geometry(multipolygon,32618));'.format(self.table_name_in)
+                       'geom geometry(MultiLineStringZM,32618),geom_catchment geometry(multipolygon,32618),cluster character varying(50),' \
+                       'fa_name character varying(50),sub_focusarea smallint,nord integer,nordstop integer);'.format(self.table_name_in)
         add_pkey = 'alter table wikiwtershedoutputs.{} add constraint pk_{} primary key (comid);'.format(self.table_name_in, self.table_name_in)
         grant_select = 'grant select on wikiwtershedoutputs.{} to srat_select;'.format(self.table_name_in)
         create_trigger = 'CREATE OR REPLACE FUNCTION update_{}_geom() RETURNS trigger AS $BODY$ BEGIN ' \
                       'new.geom := a.geom from spatial.nhdplus_maregion a where a.comid = new.comid;' \
-                      'new.catchment := a.catchment from spatial.nhdplus_maregion a where a.comid = new.comid;' \
+                      'new.geom_catchment := a.catchment from spatial.nhdplus_maregion a where a.comid = new.comid;' \
                       'new.maflowv := a.qe_ma from wikiwtershed.cache_nhdcoefs a where a.comid = new.comid;' \
                       'new.watershed_hectares := a.totdasqkm*100.0 from spatial.nhdplus_maregion a where a.comid = new.comid;' \
                       'new.catchment_hectares := ST_AREA(a.catchment)/10000.0 from spatial.nhdplus_maregion a where a.comid = new.comid;' \
                       'new.tploadrate_total_ws := case when new.maflowv >= 0 then ((new.tploadate_conc * 28.3168 * 31557600 / 1000000) * new.maflowv) / new.watershed_hectares else -9999 end;' \
                       'new.tnloadrate_total_ws := case when new.maflowv >= 0 then ((new.tnloadate_conc * 28.3168 * 31557600 / 1000000) * new.maflowv) / new.watershed_hectares else -9999 end;' \
                       'new.tssloadrate_total_ws := case when new.maflowv >= 0 then ((new.tssloadate_conc * 28.3168 * 31557600 / 1000000) * new.maflowv) / new.watershed_hectares else -9999 end;' \
+                      'new.cluster := a.cluster from spatial.nhdplus_maregion a where a.comid = new.comid;' \
+                      'new.fa_name := a.name from datadrwi.focusareas_p2plus_pp a where a.comid = new.comid and a.phase like \'Phase 2 Plus\' and a.cluster like new.cluster limit 1;' \
+                      'new.sub_focusarea := a.sub_focusarea from datadrwi.focusareas_p2plus_pp a where a.comid = new.comid and a.phase like \'Phase 2 Plus\' and a.cluster like new.cluster and a.name like new.fa_name limit 1;' \
+                      'new.nord := a.nord from spatial.nhdplus_maregion a where a.comid = new.comid;' \
+                      'new.nordstop := a.nordstop from spatial.nhdplus_maregion a where a.comid = new.comid;' \
                       'RETURN new; END; $BODY$ LANGUAGE plpgsql;'.format(self.table_name_in)
         add_trigger = 'CREATE TRIGGER {}_trigger_geom_insert BEFORE INSERT ON wikiwtershedoutputs.{} FOR EACH ROW ' \
                       'EXECUTE PROCEDURE update_{}_geom();'.format(self.table_name_in, self.table_name_in, self.table_name_in)

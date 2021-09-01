@@ -13,6 +13,11 @@ dependencies:
     - jupyterlab >=3.0.12
     - nb_conda  # Conda environment & package access extension from within Jupyter
     - ipywidgets  # Required for HoloViz interactivity
+    - matplotlib
+    - geopandas
+    - sqlalchemy
+    - plotly
+    - pynhd
 
     # Dev tools
     # - python-language-server

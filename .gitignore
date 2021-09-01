@@ -104,8 +104,13 @@ ENV/
 
 .idea/
 
+
+# Project-specific files & folders
 SRAT.zip
 TO_Do_01_118.txt
 
 db_config.txt
 db_config.json
+
+.virtual_documents
+cache

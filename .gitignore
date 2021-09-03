@@ -114,3 +114,4 @@ db_config.json
 
 .virtual_documents
 cache
+*.jupyterlab-workspace

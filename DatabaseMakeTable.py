@@ -28,7 +28,7 @@ class DatabaseMakeTable:
                        'catchment_hectares numeric(20,4),watershed_hectares numeric(20,4),tploadrate_total_ws numeric(20,4),' \
                        'tnloadrate_total_ws numeric(20,4),tssloadrate_total_ws numeric(20,4),maflowv numeric(20,4),' \
                        'geom geometry(MultiLineStringZM,32618),geom_catchment geometry(multipolygon,32618),cluster character varying(50),' \
-                       'fa_name character varying(50),sub_focusarea smallint,nord integer,nordstop integer);'.format(self.table_name_in)
+                       'fa_name character varying(50),sub_focusarea smallint,nord integer,nordstop integer, huc12 varchar(12));'.format(self.table_name_in)
         add_pkey = 'alter table wikiwtershedoutputs.{} add constraint pk_{} primary key (comid);'.format(self.table_name_in, self.table_name_in)
         grant_select = 'grant select on wikiwtershedoutputs.{} to srat_select;'.format(self.table_name_in)
         create_trigger = 'CREATE OR REPLACE FUNCTION update_{}_geom() RETURNS trigger AS $BODY$ BEGIN ' \
@@ -45,6 +45,7 @@ class DatabaseMakeTable:
                       'new.sub_focusarea := a.sub_focusarea from datadrwi.focusareas_p2plus_pp a where a.comid = new.comid and a.phase like \'Phase 2 Plus\' and a.cluster like new.cluster and a.name like new.fa_name limit 1;' \
                       'new.nord := a.nord from spatial.nhdplus_maregion a where a.comid = new.comid;' \
                       'new.nordstop := a.nordstop from spatial.nhdplus_maregion a where a.comid = new.comid;' \
+                      'new.huc12 := a.huc12 from spatial.nhdplus_maregion a where a.comid = new.comid;' \
                       'RETURN new; END; $BODY$ LANGUAGE plpgsql;'.format(self.table_name_in)
         add_trigger = 'CREATE TRIGGER {}_trigger_geom_insert BEFORE INSERT ON wikiwtershedoutputs.{} FOR EACH ROW ' \
                       'EXECUTE PROCEDURE update_{}_geom();'.format(self.table_name_in, self.table_name_in, self.table_name_in)

@@ -3,7 +3,7 @@ channels:
     - conda-forge
     - defaults
 dependencies:
-    - python =3.8.10  # May 3, 2021: final regular Py 3.8 release. https://www.python.org/downloads/release/python-3810/
+    - python =3.8.*  # May 3, 2021: final regular Py 3.8 release. https://www.python.org/downloads/release/python-3810/
 
     - pandas >=1.3
 
@@ -36,5 +36,3 @@ dependencies:
     # - pip
     #- pip:
         # - lckr-jupyterlab-variableinspector  # https://github.com/lckr/jupyterlab-variableInspector
-        # Saving to parquet
-        

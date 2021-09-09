@@ -19,6 +19,7 @@ dependencies:
     - plotly
     - pynhd
     - pyarrow
+    - contextily
 
 
     # Dev tools

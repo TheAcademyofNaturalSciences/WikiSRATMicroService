@@ -33,6 +33,6 @@ dependencies:
 
     # PIP install requirements only if it is not  possible with conda
     # https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#using-pip-in-an-environment
-    # - pip
-    #- pip:
-        # - lckr-jupyterlab-variableinspector  # https://github.com/lckr/jupyterlab-variableInspector
+    - pip
+    - pip:
+        - lckr-jupyterlab-variableinspector  # https://github.com/lckr/jupyterlab-variableInspector

@@ -3,24 +3,23 @@ channels:
     - conda-forge
     - defaults
 dependencies:
-    - python =3.8.*  # May 3, 2021: final regular Py 3.8 release. https://www.python.org/downloads/release/python-3810/
-
+    - python =3.8.*  # Py v3.8.10 was the final regular Py 3.8 release (May 3, 2021). https://www.python.org/downloads/release/python-3810/
     - pandas >=1.3
-
     - psycopg2 >=2.9.1
+
+    - geopandas
+    - sqlalchemy
+    - pyarrow
+
+    - pynhd
 
     # Interactivity & Visualization via Jupyter Notebooks
     - jupyterlab >=3.0.12
     - nb_conda  # Conda environment & package access extension from within Jupyter
     - ipywidgets  # Required for HoloViz interactivity
     - matplotlib
-    - geopandas
-    - sqlalchemy
     - plotly
-    - pynhd
-    - pyarrow
     - contextily
-
 
     # Dev tools
     # - python-language-server
@@ -30,7 +29,6 @@ dependencies:
     # package management
     - conda
     - conda-build
-
 
     # PIP install requirements only if it is not  possible with conda
     # https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#using-pip-in-an-environment

@@ -10,8 +10,9 @@ dependencies:
     - geopandas
     - sqlalchemy
     - pyarrow
-
     - pynhd
+    - geojson
+
 
     # Interactivity & Visualization via Jupyter Notebooks
     - jupyterlab >=3.0.12

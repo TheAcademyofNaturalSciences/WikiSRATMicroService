@@ -118,4 +118,5 @@ cache
 .~*
 
 # Ignore raw FieldDoc data files
+data/FieldDocExports
 *.gpkg

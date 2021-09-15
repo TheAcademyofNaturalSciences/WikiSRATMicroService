@@ -116,3 +116,6 @@ db_config.json
 cache
 *.jupyterlab-workspace
 .~*
+
+# Ignore raw FieldDoc data files
+*.gpkg

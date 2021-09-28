@@ -117,6 +117,9 @@ cache
 *.jupyterlab-workspace
 .~*
 
-# Ignore raw FieldDoc data files
+# Ignore raw data files
 data/FieldDocExports
 *.gpkg
+figs/
+*.svg
+figs/Brandywine and Christina_FA_Zoom_tp_conc_tp_loadrate.svg

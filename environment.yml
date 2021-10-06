@@ -12,6 +12,7 @@ dependencies:
     - pyarrow
     - pynhd
     - geojson
+    - openpyxl
 
 
     # Interactivity & Visualization via Jupyter Notebooks

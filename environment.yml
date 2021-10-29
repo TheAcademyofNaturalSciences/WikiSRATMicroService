@@ -20,6 +20,7 @@ dependencies:
     - nb_conda  # Conda environment & package access extension from within Jupyter
     - ipywidgets  # Required for HoloViz interactivity
     - matplotlib
+    - matplotlib-scalebar
     - plotly
     - contextily
 

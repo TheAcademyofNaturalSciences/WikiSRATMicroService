@@ -261,7 +261,7 @@ Set
 
 -- Added this 10.2.18 based on conversation with BME
 -- Smaller models have lower values for streambank
-	tpload_streambank_att 	= (old.tpload_streambank * 1.25 ) * new.streambnk_tp_att_coef,
+	tpload_streambank_att 	= (old.tpload_streambank * 1.00 ) * new.streambnk_tp_att_coef,
 	-- New 5_22_18
 	tpload_subsurface_att   = old.tpload_subsurface * new.grnd_tp_att_coef,
 	tpload_pointsource_att = old.tpload_pointsource * new.pt_2011_tp_att_coef   ,
@@ -289,7 +289,7 @@ Set
 
 -- Added this 10.2.18 based on conversation with BME
 -- Smaller models have lower values for streambank
-	tnload_streambank_att 	= ( old.tnload_streambank * 1.25 )* new.streambnk_tp_att_coef,
+	tnload_streambank_att 	= ( old.tnload_streambank * 1.00 )* new.streambnk_tp_att_coef,
 
 	-- New 5_22_18
 	tnload_subsurface_att   = old.tnload_subsurface * new.grnd_tn_att_coef,
@@ -317,7 +317,7 @@ Set
 
 -- Added this 10.2.18 based on conversation with BME
 -- Smaller models have lower values for streambank
-	tssload_streambank_att 	= (old.tssload_streambank * 1.25) * new.streambnk_tss_att_coef
+	tssload_streambank_att 	= (old.tssload_streambank * 1.00) * new.streambnk_tss_att_coef
 --	tssload_subsurface_att ,
 --	tssload_pointsource_att = old.tssload_pointsource * new.pt_2011_tss_att_coef   ,
 --	tssload_septics_att     = old.tssload_septics	* new.lowdensity2011cat_tss_att_coef,

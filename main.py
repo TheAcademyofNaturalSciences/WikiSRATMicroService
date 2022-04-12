@@ -28,7 +28,7 @@ def respond(err, res=None):
 def lambda_handler(event, context):
     try:
         data = StringParser.parse(event['body'])
-        db = DatabaseAdapter(database, user, host, port, password)
+        db = DatabaseAdapter(database, user, host, port, password, flag_in='base')
         input_array = DatabaseAdapter.python_to_array(data)
         return respond(None, db.run_model(input_array))
     except AttributeError as e:

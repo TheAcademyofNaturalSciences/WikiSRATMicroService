@@ -18,7 +18,7 @@ copyfile("DatabaseAdapter.py","deploy/DatabaseAdapter.py")
 copyfile("StringParser.py","deploy/StringParser.py")
 copyfile("main.py","deploy/main.py")
 
-zip_out = zipfile.ZipFile("SRAT.zip", 'w')
+zip_out = zipfile.ZipFile("SRAT_STAGING.zip", 'w')
 zipdir('deploy/', zip_out)
 zip_out.close()
 

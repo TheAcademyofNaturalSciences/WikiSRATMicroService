@@ -1,9 +1,9 @@
 ﻿-- Setting up the data 
 
-alter table wikiwtershed.ms_pointsource_drb_12_13_18 add column comid integer
+alter table wikiwtershed.ms_pointsource_drb_04_12_22 add column comid integer
 select comid from wikiwtershed.ms_pointsource 
 
-update wikiwtershed.ms_pointsource_drb_12_13_18 old
+update wikiwtershed.ms_pointsource_drb_04_12_22 old
 set comid = new.comid
 from (select * from spatial.nhdplus) new
 where ST_Intersects(new.catchment, old.geom)
@@ -32,31 +32,31 @@ from ( select * from spatial.drbbounds ) filter
 where ST_Intersects(old.geom,ST_transform(filter.geom,4326))
 
 
-Drop Table if exists wikiwtershed.cache_nhdcoefs2;
+Drop Table if exists wikiwtershed.cache_nhdcoefs_2019;
 
 set enable_seqscan = off;
 
-Create Table wikiwtershed.cache_nhdcoefs2 as 
-Select * From wikiwtershed.nhdcoefs;
+Create Table wikiwtershed.cache_nhdcoefs_2019 as 
+Select * From wikiwtershed.nhdcoefs_2019;
 
 set enable_seqscan = on;
 
 
 
-ALTER TABLE wikiwtershed.cache_nhdcoefs2
-  ADD CONSTRAINT nhdpluscoefspk5 PRIMARY KEY(comid);
+ALTER TABLE wikiwtershed.cache_nhdcoefs_2019
+  ADD CONSTRAINT cache_nhdcoefs_2019pk5 PRIMARY KEY(comid);
 
 CREATE INDEX 
-   ON wikiwtershed.cache_nhdcoefs2 (huc12 ASC NULLS LAST);
+   ON wikiwtershed.cache_nhdcoefs_2019 (huc12 ASC NULLS LAST);
 
-ALTER TABLE wikiwtershed.cache_nhdcoefs2
+ALTER TABLE wikiwtershed.cache_nhdcoefs_2019
   ADD FOREIGN KEY (huc12) REFERENCES wikiwtershed.boundary_huc12 (huc12)
    ON UPDATE NO ACTION ON DELETE NO ACTION;
-CREATE INDEX huc12foreignkeycoefs21a
-  ON wikiwtershed.cache_nhdcoefs2(huc12);
+CREATE INDEX huc12foreignkeyccache_nhdcoefs_2019
+  ON wikiwtershed.cache_nhdcoefs_2019(huc12);
 
-Grant Select on table wikiwtershed.cache_nhdcoefs2 to ms_select;
-
+Grant Select on table wikiwtershed.cache_nhdcoefs_2019 to ms_select;
+Grant Select on table wikiwtershed.cache_nhdcoefs_2019 to srat_select;
 
  
 Drop Table If Exists wikiwtershed.cache_nhdcoefs_old;
@@ -65,7 +65,7 @@ Drop Table If Exists wikiwtershed.cache_nhdcoefs_old;
 
 Alter Table wikiwtershed.cache_nhdcoefs rename to cache_nhdcoefs_old;
 
-Alter Table wikiwtershed.cache_nhdcoefs2 rename to cache_nhdcoefs;
+Alter Table wikiwtershed.cache_nhdcoefs_2019 rename to cache_nhdcoefs;
 
 
 Grant Select on table wikiwtershed.cache_nhdcoefs to ms_select;
@@ -85,8 +85,8 @@ From
  on t1.comid = t2.comid
  
 
-Select sum(qe_ma) from wikiwtershed.cache_nhdcoefs2
+Select sum(qe_ma) from wikiwtershed.cache_nhdcoefs_2019
 
- drop table wikiwtershed.cache_nhdcoefs2
+ drop table wikiwtershed.cache_nhdcoefs_2019
 
 	

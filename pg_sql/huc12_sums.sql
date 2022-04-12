@@ -1,8 +1,8 @@
 ﻿-- Create table that makes sums for huc12 ..
 
-Drop Table wikiwtershed.huc12_strmcat11;
+Drop Table wikiwtershed.huc12_strmcat19;
 
-Create Table wikiwtershed.huc12_strmcat11
+Create Table wikiwtershed.huc12_strmcat19
 (
 huc12 character varying(12) NOT NULL,
 CatAreaSqKm	float	,
@@ -28,12 +28,12 @@ PctHbWet2011Cat	float
 );
 
 
-Begin; Alter Table wikiwtershed.huc12_strmcat11 add constraint pkhuc12_strmcat11 primary key (huc12); Commit;
+Begin; Alter Table wikiwtershed.huc12_strmcat19 add constraint pkhuc12_strmcat19 primary key (huc12); Commit;
 
-Insert Into wikiwtershed.huc12_strmcat11 (huc12)
+Insert Into wikiwtershed.huc12_strmcat19 (huc12)
 Select huc12 from wikiwtershed.boundary_huc12;
 
-Update wikiwtershed.huc12_strmcat11 old
+Update wikiwtershed.huc12_strmcat19 old
 Set 
 CatAreaSqKm = new.CatAreaSqKm,
 PctOw2011Cat	= new.PctOw2011Cat,
@@ -75,9 +75,9 @@ From
 	,sum(PctWdWet2011Cat * CatAreaSqKm) / sum(CatAreaSqKm) As PctWdWet2011Cat
 	,sum(PctHbWet2011Cat * CatAreaSqKm) / sum(CatAreaSqKm) As PctHbWet2011Cat
 		From 
-		wikiwtershed.nhdplus t1
+		wikiwtershed.nhdplus_streamgeom t1
 		join 
-		wikiwtershed.strmcat11 t2
+		wikiwtershed.strmcat19 t2
 		on t1.comid = t2.comid
 		Group by t1.huc12
 ) new

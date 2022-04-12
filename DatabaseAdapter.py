@@ -77,14 +77,14 @@ class DatabaseAdapter:
     def srat_nhd(self, input_array):
         cur = self.conn.cursor()
         if self.flag_in == 'base':
-            cur.callproc('wikiwtershed.srat_nhd', input_array)
+            cur.callproc('wikiwtershed.srat_nhd_nlcd2019', input_array)
         elif self.flag_in == 'restoration':
             cur.callproc('wikiwtershed.srat_nhd_restoration', input_array)
         return self.comid_array_to_python(cur.fetchall())
 
     def srat_huc12(self, input_array):
         cur = self.conn.cursor()
-        cur.callproc('wikiwtershed.srat_huc12', input_array)
+        cur.callproc('wikiwtershed.srat_huc12_nlcd2019', input_array)
         return self.huc12_array_to_python(cur.fetchall())
 
     def run_model(self, input_array):

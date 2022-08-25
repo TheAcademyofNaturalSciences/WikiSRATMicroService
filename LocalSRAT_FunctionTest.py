@@ -58,14 +58,14 @@ _dbdata = _cur.fetchall()
 _body = DatabaseFormatter.parse(_dbdata)
 _body = eval(json.loads(json.dumps(_body)))
 for huc12 in _body:
-    # huc12["restoration_sources"] = ["Delaware River Operational Fund", "Delaware Watershed Conservation Fund",
-    #                                 "Delaware River Restoration Fund", "PADEP", "NJDEP"]
+    huc12["restoration_sources"] = ["Delaware River Operational Fund", "Delaware Watershed Conservation Fund",
+                                    "Delaware River Restoration Fund", "PADEP", "NJDEP"]
     # huc12["restoration_sources"] = ["Delaware River Operational Fund", "Delaware Watershed Conservation Fund",
     #                                 "Delaware River Restoration Fund"]
-    huc12["restoration_sources"] = ["PADEP", "NJDEP"]
+    # huc12["restoration_sources"] = ["PADEP", "NJDEP"]
     huc12["with_attenuation"] = True
 _body = json.dumps(_body)
-#print(_body)
+print(_body)
 
 _flag = 'base'
 
@@ -77,7 +77,7 @@ _r = dict(lambda_handler({"body": _body},None))
 nhdloads = dict(json.loads(_r['body']))['huc12s']
 
 # Explore selection of data for a HUC12
-print(dict(json.loads(_r['body']))['huc12s']['020402030902']['catchments'])
+#print(dict(json.loads(_r['body']))['huc12s']['020402030902']['catchments'])
 
 
 

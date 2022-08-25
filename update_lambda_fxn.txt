@@ -1,0 +1,16 @@
+
+
+
+aws lambda update-function-configuration --function-name "SratRunModel_DEV" --description "Restarting Lambda for staging function."
+
+
+aws lambda update-function-configuration --function-name "SratRunModel" --description "Restarting Lambda for production function."
+
+
+
+
+
+
+
+
+

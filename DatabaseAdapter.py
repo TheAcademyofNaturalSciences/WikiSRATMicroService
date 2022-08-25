@@ -28,6 +28,8 @@ class DatabaseAdapter:
         for huc12 in python_object:
             for attribute, value in huc12.items():
                 result[huc12_column_numbers[attribute]].append(value)
+        # Filter out the sources and restoration flags if not provided
+        result = list(filter(None, result))
         return result
 
     @classmethod
@@ -76,15 +78,20 @@ class DatabaseAdapter:
 
     def srat_nhd(self, input_array):
         cur = self.conn.cursor()
-        if self.flag_in == 'base':
+        if len(input_array) == 42:
             cur.callproc('wikiwtershed.srat_nhd_nlcd2019', input_array)
-        elif self.flag_in == 'restoration':
-            cur.callproc('wikiwtershed.srat_nhd_restoration', input_array)
+        elif len(input_array) == 44:
+            # print(input_array)
+            cur.callproc('wikiwtershed.srat_nhd_nlcd2019_restoration', input_array)
         return self.comid_array_to_python(cur.fetchall())
 
     def srat_huc12(self, input_array):
         cur = self.conn.cursor()
-        cur.callproc('wikiwtershed.srat_huc12_nlcd2019', input_array)
+        if len(input_array) == 42:
+            cur.callproc('wikiwtershed.srat_huc12_nlcd2019', input_array)
+        elif len(input_array) == 44:
+
+            cur.callproc('wikiwtershed.srat_huc12_nlcd2019_restoration', input_array)
         return self.huc12_array_to_python(cur.fetchall())
 
     def run_model(self, input_array):

@@ -53,18 +53,28 @@ _cur = _PG_Connection.cursor()
 _cur.execute("select * from databmpapi.drb_loads_raw where huc12 in ('020402030902', '020402030901');")
 
 _dbdata = _cur.fetchall()
-print(len(_dbdata))
 
 # Prepare the input payload body for the MicroService request
 _body = DatabaseFormatter.parse(_dbdata)
+_body = eval(json.loads(json.dumps(_body)))
+for huc12 in _body:
+    # huc12["restoration_sources"] = ["Delaware River Operational Fund", "Delaware Watershed Conservation Fund",
+    #                                 "Delaware River Restoration Fund", "PADEP", "NJDEP"]
+    # huc12["restoration_sources"] = ["Delaware River Operational Fund", "Delaware Watershed Conservation Fund",
+    #                                 "Delaware River Restoration Fund"]
+    huc12["restoration_sources"] = ["PADEP", "NJDEP"]
+    huc12["with_attenuation"] = True
+_body = json.dumps(_body)
+#print(_body)
 
 _flag = 'base'
 
 # RUN THE HUC12s THROUGH THE MICROSERVICE
 _r = dict(lambda_handler({"body": _body},None))
+# print(_r)
 
 # Extract the NHD Loads from the response
-_nhdloads = dict(json.loads(_r['body']))['huc12s']
+nhdloads = dict(json.loads(_r['body']))['huc12s']
 
 # Explore selection of data for a HUC12
 print(dict(json.loads(_r['body']))['huc12s']['020402030902']['catchments'])

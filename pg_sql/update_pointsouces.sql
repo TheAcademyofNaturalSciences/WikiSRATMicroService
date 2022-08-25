@@ -168,11 +168,11 @@ select * from wikiwtershed.nhdplus_x_huc12 limit 100;
 
 select * from wikiwtershed.retetion_factors;
 --update wikiwtershed.retetion_factors set tn = 0.00, tp = 0.13, tss = 0.10;
-update wikiwtershed.retetion_factors set tn = 0.02, tp = 0.16, tss = 0.20;
+--update wikiwtershed.retetion_factors set tn = 0.02, tp = 0.16, tss = 0.20;
 --update wikiwtershed.retetion_factors set tn = 0.02, tp = 0.19, tss = 0.24;
 --update wikiwtershed.retetion_factors set tn = 0.02, tp = 0.22, tss = 0.28;
-
-
-
+--update wikiwtershed.retetion_factors set tn = 0.01, tp = 0.18, tss = 0.18;
+--update wikiwtershed.retetion_factors set tn = 0.01, tp = 0.19, tss = 0.15;
+update wikiwtershed.retetion_factors set tn = 0.01, tp = 0.22, tss = 0.11;
 
 

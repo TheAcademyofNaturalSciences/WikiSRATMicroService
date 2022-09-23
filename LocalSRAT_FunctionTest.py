@@ -77,7 +77,7 @@ _r = dict(lambda_handler({"body": _body},None))
 nhdloads = dict(json.loads(_r['body']))['huc12s']
 
 # Explore selection of data for a HUC12
-#print(dict(json.loads(_r['body']))['huc12s']['020402030902']['catchments'])
+print(dict(json.loads(_r['body']))['huc12s']['020402030902']['catchments'])
 
 
 

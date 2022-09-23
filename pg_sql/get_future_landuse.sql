@@ -45,12 +45,13 @@ sediment_lb_acre
 
 alter table datapolassess.fd_api_protection_comid_nlcd2019 add column histo_24 numeric default 0.0;
 
+drop table if exists datapolassess.fd_api_protection_lbsavoided_comid;
 create table datapolassess.fd_api_protection_lbsavoided_comid
 as
 select distinct comid as comid_prot
-,sum(tnlb_change) over (partition by comid) as tnlb_change
-,sum(tplb_change) over (partition by comid) as tplb_change
-,sum(tsslb_change) over (partition by comid) as tsslb_change
+,sum(tnlb_change/2.20462) over (partition by comid) as tn_avoided_kg
+,sum(tplb_change/2.20462) over (partition by comid) as tp_avoided_kg
+,sum(tsslb_change/2.20462) over (partition by comid) as tss_avoided_kg
 ,program_na as source
 	from (
 	select id
@@ -221,6 +222,16 @@ GRANT SELECT ON TABLE datapolassess.fd_api_protection_lbsavoided_comid TO keisan
 select distinct source from datapolassess.fd_api_protection_lbsavoided_comid order by source;
 
 ['Delaware River Watershed Protection Fund - Forestland Capital Grants', 'Delaware River Watershed Protection Fund - Transaction Grants']
+
+(
+'Delaware River Operational Fund', -- some have reductions and some do not, not the primary focus of this program
+'Delaware Watershed Conservation Fund', -- should not be in restoration
+'Delaware River Restoration Fund', -- all reductions valid
+'PADEP', 
+'NJDEP', 
+'Delaware River Watershed Protection Fund - Forestland Capital Grants', 
+'Delaware River Watershed Protection Fund - Transaction Grants' 
+)
 
 
 

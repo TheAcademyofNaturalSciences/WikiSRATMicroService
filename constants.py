@@ -238,6 +238,7 @@ comid_column_numbers = {
     "tssload_wetland": 45,
     "tssload_tiledrain": 46,
     "tssload_streambank": 47
+
 }
 
 comid_returned_column_numbers = {
@@ -288,5 +289,10 @@ comid_returned_column_numbers = {
     44: "tssload_hdm",
     45: "tssload_wetland",
     46: "tssload_tiledrain",
-    47: "tssload_streambank"
+    47: "tssload_streambank",
+
+    48: "tn_conc_ptsource",
+    49: "tp_conc_ptsource",
+    50: "tss_conc_ptsource",
+    51: "maflowv"
 }

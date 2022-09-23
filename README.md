@@ -2,7 +2,7 @@
 
 ## Install instructions
 
-This project is designed to run on Python 3.6.
+This project is designed to run on Python 3.8.
 To install all dependancies for this project run the following command
 ```
 pip install requirements.txt
@@ -27,6 +27,16 @@ Tests for this project use the Unittests library. All tests can be found in the 
 ## Deploying to AWS
 
 There is a simple script called `deploy.py` that will create a .zip for deployment to AWS. This script uses the dependencies that are saved in dependancies.zip. If dependancies have since been updated, please update this zip. Once the `SRAT.zip` has been created, upload it to AWS lambda.
+
+If dependancies need to be updated, the lambda layer that has the python environment should be updated. This is in the './package' folder. This process has been Dockerized for ease of use across operating systems.
+
+```
+cd packages
+docker build -f Dockerfile . -t aws_lamda_builder_image
+./runner.sh
+```
+
+Running this code should produce './python.zip'. Upload this python.zip file as a new version of the wikisrat-psycopg2-jsonschema layer in AWS.
 
 ## Submitting a baseline 2019 attenuation request
 
@@ -176,7 +186,11 @@ Output is the HUC12 loads re-aggregated and routed at the NHDplus V2 catchment s
     "tssload_hdm": {"type": "number"},
     "tssload_wetland": {"type": "number"},
     "tssload_tiledrain": {"type": "number"},
-    "tssload_streambank": {"type": "number"}},
+    "tssload_streambank": {"type": "number"},
+    "tn_conc_ptsource": {"type": "number"}, 
+    "tp_conc_ptsource": {"type": "number"}, 
+    "tss_conc_ptsource": {"type": "number"}, 
+    "maflowv": {"type": "number"}},
    "4782675": ...
    },
    ...
@@ -185,15 +199,21 @@ Output is the HUC12 loads re-aggregated and routed at the NHDplus V2 catchment s
 }
 ```
 
-## Submitting a 2019 attenuation request with DRWI and state agency (PADEP, NJDEP) Best Management Practices (BMPs) considered.
+## Submitting a 2019 attenuation request with DRWI and state agency (PADEP, NJDEP) Restoration Best Management Practices (BMPs) AND/OR DRWI Protection projects considered.
 
 Contact Mike Campagna (msc94@drexel.edu) for an API key. There is no limit on the amount of HUC12s that can be submitted. In order to route comids, all HUC12s in the watershed of interest should be submitted.
 
-In order to submit a request with BMPs considered, there are two additional parameters to be used. These are the "restoration_sources" and "with_attenuation" keys. Both of these must be properly filled out in order to format a valid request.
+In order to submit a request with BMPs considered, there are two additional parameters to be used. These are the "restoration_sources" and "with_attenuation" keys. Both of these must be properly filled out in order to format a valid request. Any combination of restoration and protection source options can be included.
+
+Restoration projects are subtracted from the load as it is attenuated downstream. Protection is dealt with differently. When running a protection run, the result represents the load and concentrations if these parcels were NOT protected. So, the loads go up in the protection runs as this is what the landscape would produce if the lands were not protected.
 
 Restoration Source Options
 ```
 ["Delaware River Operational Fund", "Delaware Watershed Conservation Fund", "Delaware River Restoration Fund", "PADEP", "NJDEP"]
+```
+Protection Source Options
+```
+["Delaware River Watershed Protection Fund - Forestland Capital Grants", "Delaware River Watershed Protection Fund - Transaction Grants"]
 ```
 With Attenuation Options
 ```

@@ -21,6 +21,14 @@ def lambda_handler(event, context):
         data = StringParser.parse(event['body'])
         db = DatabaseAdapter(_database[0], _user[0], _host[0], _port, _password[0], _flag)
         input_array = DatabaseAdapter.python_to_array(data)
+        print(data[0]["with_concentration"])
+        try:
+            rest_sources = data[0]["restoration_sources"]
+            with_conc = data[0]["with_concentration"]
+        except:
+            rest_sources = None
+            with_conc = None
+
         return respond(None, db.run_model(input_array))
     except AttributeError as e:
         return respond(e)
@@ -63,9 +71,9 @@ for huc12 in _body:
     # huc12["restoration_sources"] = ["Delaware River Operational Fund", "Delaware Watershed Conservation Fund",
     #                                 "Delaware River Restoration Fund"]
     # huc12["restoration_sources"] = ["PADEP", "NJDEP"]
-    huc12["with_attenuation"] = True
+    huc12["with_concentration"] = True
 _body = json.dumps(_body)
-print(_body)
+# print(_body)
 
 _flag = 'base'
 

@@ -47,7 +47,7 @@ schema = {
                 "tssload_tiledrain": {"type": "number"},
                 "tssload_streambank": {"type": "number"},
                 "restoration_sources": {"type": "array"},
-                "with_attenuation": {"type": "boolean"}
+                "with_concentration": {"type": "boolean"}
             },
             "additionalProperties": False,
             "required": [
@@ -186,7 +186,7 @@ huc12_column_numbers = {
     "tssload_tiledrain": 40,
     "tssload_streambank": 41,
     "restoration_sources": 42,
-    "with_attenuation": 43
+    "with_concentration": 43
 }
 
 comid_column_numbers = {

@@ -40,7 +40,160 @@ totaln_lb_acre
 totalp_lb_acre
 sediment_lb_acre
 
+-- SEE WHAT OSI SAYS
+select * from datapolassess.fd_api_protection_comid_buildout_corridors;
+select * from datapolassess.fd_api_protection_comid_nlcd2019;
 
+create table datapolassess.osi_buildout_analysis
+(
+	project_name	varchar
+,	dev_open_acres_add	numeric
+,	dev_low_acres_add	numeric
+,	dev_med_acres_add	numeric
+,	dev_high_acres_add	numeric
+,	crop_acres_add	numeric
+,	notes	varchar
+,	cp_acres_sub	boolean
+,	hp_acres_sub	boolean
+,	fore_acres_sub	boolean
+,	shrub_acres_sub	boolean
+,	wet_acres_sub	boolean
+,	all_acres_sub	boolean
+
+);
+
+alter table datapolassess.osi_buildout_analysis add column geom geometry(multipolygon, 4326);
+
+select distinct proj_name 
+from datapolassess.osilpia_protection_lbsavoided 
+order by proj_name;
+
+update datapolassess.osi_buildout_analysis set project_name = 'Zemel Woodland South'
+where project_name like 'Zemel Woodland S';
+
+select distinct proj_name from datapolassess.osilpia_protection_lbsavoided where proj_name like '%Zemel%' order by proj_name;
+select distinct project_name from datapolassess.osi_buildout_analysis where project_name like '%Zemel%' order by project_name;
+
+update datapolassess.osi_buildout_analysis a set geom = b.geom
+from datapolassess.osilpia_protection_lbsavoided as b
+where a.project_name like b.proj_name;
+
+
+select distinct b.proj_name, a.* 
+from datapolassess.osi_buildout_analysis as a
+left join datapolassess.osilpia_protection_lbsavoided as b
+on lower(a.project_name) like lower(b.proj_name)
+ --or lower(left(a.project_name,11)) like lower(left(b.proj_name,11))
+order by a.project_name;
+
+alter table datapolassess.osi_buildout_analysis add column cp_acres_sub_int int;
+alter table datapolassess.osi_buildout_analysis add column hp_acres_sub_int int;
+alter table datapolassess.osi_buildout_analysis add column fore_acres_sub_int int;
+alter table datapolassess.osi_buildout_analysis add column shrub_acres_sub_int int;
+alter table datapolassess.osi_buildout_analysis add column wet_acres_sub_int int;
+alter table datapolassess.osi_buildout_analysis add column all_acres_sub_int int;
+
+update datapolassess.osi_buildout_analysis set cp_acres_sub_int = 1
+where cp_acres_sub = 't';
+update datapolassess.osi_buildout_analysis set hp_acres_sub_int = 1
+where hp_acres_sub = 't';
+update datapolassess.osi_buildout_analysis set fore_acres_sub_int = 1
+where fore_acres_sub = 't';
+update datapolassess.osi_buildout_analysis set shrub_acres_sub_int = 1
+where shrub_acres_sub = 't';
+update datapolassess.osi_buildout_analysis set wet_acres_sub_int = 1
+where wet_acres_sub = 't';
+update datapolassess.osi_buildout_analysis set all_acres_sub_int = 1
+where all_acres_sub = 't';
+
+
+
+update datapolassess.osi_buildout_analysis set cp_acres_sub = 1
+where cp_acres_sub = 't';
+
+select distinct b.practice_n, b.comid,
+a.project_name, 
+dev_open_acres_add,dev_low_acres_add,dev_med_acres_add,dev_high_acres_add,crop_acres_add,
+cp_acres_sub_int, hp_acres_sub_int, fore_acres_sub_int, shrub_acres_sub_int, wet_acres_sub_int, all_acres_sub_int,
+count(project_name) over (partition by project_name) as comid_count, 
+b.histo_11, 
+case when dev_open_acres_add > 0.0 then b.histo_21 + (dev_open_acres_add*4046.86/900.0)/comid_count::numeric, 
+case when dev_low_acres_add > 0.0 then b.histo_22 + (dev_low_acres_add*4046.86/900.0)/comid_count::numeric, 
+case when dev_med_acres_add > 0.0 then b.histo_23 + (dev_med_acres_add*4046.86/900.0)/comid_count::numeric, 
+case when dev_high_acres_add > 0.0 then b.histo_24 + (dev_high_acres_add*4046.86/900.0)/comid_count::numeric,  
+
+case 
+	when all_acres_sub_int = 1 then b.histo_31 - ((dev_open_acres_add + dev_low_acres_add + dev_med_acres_add + dev_high_acres_add + crop_acres_add)*4046.86/900.0)/10.0/comid_count::numeric, 
+case  
+	when all_acres_sub_int = 1 then b.histo_41 - ((dev_open_acres_add + dev_low_acres_add + dev_med_acres_add + dev_high_acres_add + crop_acres_add)*4046.86/900.0)/10.0/comid_count::numeric, 
+case  
+	when all_acres_sub_int = 1 then b.histo_42 - ((dev_open_acres_add + dev_low_acres_add + dev_med_acres_add + dev_high_acres_add + crop_acres_add)*4046.86/900.0)/10.0/comid_count::numeric, 
+case  
+	when all_acres_sub_int = 1 then b.histo_43 - ((dev_open_acres_add + dev_low_acres_add + dev_med_acres_add + dev_high_acres_add + crop_acres_add)*4046.86/900.0)/10.0/comid_count::numeric, 
+case  
+	when all_acres_sub_int = 1 then b.histo_52 - ((dev_open_acres_add + dev_low_acres_add + dev_med_acres_add + dev_high_acres_add + crop_acres_add)*4046.86/900.0)/10.0/comid_count::numeric, 
+case  
+	when all_acres_sub_int = 1 then b.histo_71 - ((dev_open_acres_add + dev_low_acres_add + dev_med_acres_add + dev_high_acres_add + crop_acres_add)*4046.86/900.0)/10.0/comid_count::numeric, 
+case  
+	when all_acres_sub_int = 1 then b.histo_81 - ((dev_open_acres_add + dev_low_acres_add + dev_med_acres_add + dev_high_acres_add + crop_acres_add)*4046.86/900.0)/10.0/comid_count::numeric, 
+case  
+	when all_acres_sub_int = 1 then b.histo_82 - ((dev_open_acres_add + dev_low_acres_add + dev_med_acres_add + dev_high_acres_add + crop_acres_add)*4046.86/900.0)/10.0/comid_count::numeric, 
+case  
+	when all_acres_sub_int = 1 then b.histo_90 - ((dev_open_acres_add + dev_low_acres_add + dev_med_acres_add + dev_high_acres_add + crop_acres_add)*4046.86/900.0)/10.0/comid_count::numeric, 
+case  
+	when all_acres_sub_int = 1 then b.histo_95 - ((dev_open_acres_add + dev_low_acres_add + dev_med_acres_add + dev_high_acres_add + crop_acres_add)*4046.86/900.0)/10.0/comid_count::numeric, 
+
+b.histo_41, 
+b.histo_42, 
+b.histo_43, 
+b.histo_52, 
+b.histo_71, 
+b.histo_81, 
+b.histo_82, 
+b.histo_90, 
+b.histo_95 
+from datapolassess.osi_buildout_analysis as a
+left join datapolassess.fd_api_protection_comid_nlcd2019 as b
+on a.project_name like b.practice_n
+	or st_intersects (st_buffer(st_centroid(st_transform(a.geom,32618)),100), st_transform(b.geom,32618))
+order by a.project_name;
+
+
+-- WHERE ARE THESE PROJECTS?
+-- 13 projects not found
+'18 Years'
+'Bear Creek Properties LLC'
+	'Bear Creek Ten Mile Run'
+	'Bear Creek Ten Mile Run - Subject'
+	'Bearhill Downs'
+	'Bear Creek: Pinchot Forest Addition'
+	'Bear Creek Addition'
+	'Bear Swamp'
+
+'Brodhead Flyfishers'
+	'Brodhead Watershed: SJC Builders'
+'Burnt Meadow'
+'Fisher'
+'Graham'
+'Graystone'
+'Hay Creek Riparian Buffer'
+'Holly Ridge Forest'
+'Meister'
+'S Little Bushkill'
+	'Little Bushkill Forest Reserve'
+	'Bushkill Watershed: Lein'
+'South Branch Rancocas Creek'
+'Spence'
+
+
+
+
+select * from datapolassess.fd_api_protection where lower(practice_name) like '%sixteen%';
+
+select distinct practice_name from datapolassess.fd_api_protection order by practice_name;
+
+
+create table datapolassess.fd_api_protection_comid_buildout_osi;
 
 
 alter table datapolassess.fd_api_protection_comid_nlcd2019 add column histo_24 numeric default 0.0;

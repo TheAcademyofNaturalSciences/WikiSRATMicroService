@@ -3,6 +3,7 @@ from constants import huc12_column_numbers
 from constants import huc12_returned_column_numbers
 from constants import comid_column_numbers
 from constants import comid_returned_column_numbers
+from constants import comid_returned_column_numbers_all
 
 
 class DatabaseAdapter:
@@ -89,8 +90,9 @@ class DatabaseAdapter:
         cur = self.conn.cursor()
         if len(input_array) == 42:
             cur.callproc('wikiwtershed.srat_huc12_nlcd2019', input_array)
+        elif len(input_array) == 43:
+            cur.callproc('wikiwtershed.srat_huc12_nlcd2019_restoration', input_array)
         elif len(input_array) == 44:
-
             cur.callproc('wikiwtershed.srat_huc12_nlcd2019_restoration', input_array)
         return self.huc12_array_to_python(cur.fetchall())
 

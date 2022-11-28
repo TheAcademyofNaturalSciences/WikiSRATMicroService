@@ -3,6 +3,7 @@ from constants import huc12_column_numbers
 from constants import huc12_returned_column_numbers
 from constants import comid_column_numbers
 from constants import comid_returned_column_numbers
+from constants import comid_returned_column_numbers_all
 
 
 class DatabaseAdapter:
@@ -29,6 +30,9 @@ class DatabaseAdapter:
             for attribute, value in huc12.items():
                 result[huc12_column_numbers[attribute]].append(value)
         # Filter out the sources and restoration flags if not provided
+        # This will change the length of the array based on what is present
+        # If both restoration sources and with concentration arguments are present,
+        # the array with have length 44.  If neither are present, it will be 42.
         result = list(filter(None, result))
         return result
 
@@ -78,19 +82,29 @@ class DatabaseAdapter:
 
     def srat_nhd(self, input_array):
         cur = self.conn.cursor()
+        # NOTE: The database SQL functions in the folders in this repo are NOT uploaded
+        # in the same step as updating the lambda function.
         if len(input_array) == 42:
+            # this runs the sql functions in
+            # pg_sql\srat_nhd_nlcd2019_view_return_concs.sql
             cur.callproc('wikiwtershed.srat_nhd_nlcd2019', input_array)
         elif len(input_array) == 44:
             # print(input_array)
+            # this runs the sql functions in
+            # pg_sql\srat_nhd_nlcd2019_restoration_view_return_concs.sql
             cur.callproc('wikiwtershed.srat_nhd_nlcd2019_restoration_protection', input_array)
         return self.comid_array_to_python(cur.fetchall())
 
     def srat_huc12(self, input_array):
         cur = self.conn.cursor()
+        # NOTE: The database SQL functions in the folders in this repo are NOT uploaded
+        # in the same step as updating the lambda function.
+        # NOTE: The sql executed here isn't in this repo!
         if len(input_array) == 42:
             cur.callproc('wikiwtershed.srat_huc12_nlcd2019', input_array)
+        elif len(input_array) == 43:
+            cur.callproc('wikiwtershed.srat_huc12_nlcd2019_restoration', input_array)
         elif len(input_array) == 44:
-
             cur.callproc('wikiwtershed.srat_huc12_nlcd2019_restoration', input_array)
         return self.huc12_array_to_python(cur.fetchall())
 

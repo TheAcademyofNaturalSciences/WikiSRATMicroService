@@ -1,8 +1,8 @@
-﻿-- Function: wikiwtershed.srat_nhd_nlcd2019_restoration(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[])
+﻿-- Function: wikiwtershed.srat_nhd_nlcd2019(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[])
 
--- DROP FUNCTION wikiwtershed.srat_nhd_nlcd2019_restoration(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[]);
+-- DROP FUNCTION wikiwtershed.srat_nhd_nlcd2019(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[]);
 
-CREATE OR REPLACE FUNCTION wikiwtershed.srat_nhd_nlcd2019_restoration(
+CREATE OR REPLACE FUNCTION wikiwtershed.srat_nhd_nlcd2019(
     IN huc12a character varying[],
     IN tpload_hp double precision[],
     IN tpload_crop double precision[],
@@ -44,18 +44,43 @@ CREATE OR REPLACE FUNCTION wikiwtershed.srat_nhd_nlcd2019_restoration(
     IN tssload_hdm double precision[],
     IN tssload_otherup double precision[],
     IN tssload_tiledrain double precision[],
-    IN tssload_streambank double precision[],
-    IN restoration_sources text[],
-    IN with_concentration BOOLEAN[])
-  RETURNS TABLE(comid2 integer, tploadrate_total2 double precision, tploadrate_conc2 double precision, tnloadrate_total2 double precision, tnloadrate_conc2 double precision, tssloadrate_total2 double precision, tssloadrate_conc2 double precision, tpload_hp2 double precision, tpload_crop2 double precision, tpload_wooded2 double precision, tpload_open2 double precision, tpload_barren2 double precision, tpload_ldm2 double precision, tpload_mdm2 double precision, tpload_hdm2 double precision, tpload_otherup2 double precision, tpload_farman2 double precision, tpload_tiledrain2 double precision, tpload_streambank2 double precision, tpload_subsurface2 double precision, tpload_pointsource2 double precision, tpload_septics2 double precision, tnload_hp2 double precision, tnload_crop2 double precision, tnload_wooded2 double precision, tnload_open2 double precision, tnload_barren2 double precision, tnload_ldm2 double precision, tnload_mdm2 double precision, tnload_hdm2 double precision, tnload_otherup2 double precision, tnload_farman2 double precision, tnload_tiledrain2 double precision, tnload_streambank2 double precision, tnload_subsurface2 double precision, tnload_pointsource2 double precision, tnload_septics2 double precision, tssload_hp2 double precision, tssload_crop2 double precision, tssload_wooded2 double precision, tssload_open2 double precision, tssload_barren2 double precision, tssload_ldm2 double precision, tssload_mdm2 double precision, tssload_hdm2 double precision, tssload_otherup2 double precision, tssload_tiledrain2 double precision, tssload_streambank2 double precision) AS
+    IN tssload_streambank double precision[])
+  RETURNS TABLE(comid2 integer, tploadrate_total2 double precision, tploadrate_conc2 double precision, tnloadrate_total2 double precision, tnloadrate_conc2 double precision, tssloadrate_total2 double precision,
+  tssloadrate_conc2 double precision, tpload_hp2 double precision, tpload_crop2 double precision, tpload_wooded2 double precision, tpload_open2 double precision, tpload_barren2 double precision, tpload_ldm2 double precision,
+  tpload_mdm2 double precision, tpload_hdm2 double precision, tpload_otherup2 double precision, tpload_farman2 double precision, tpload_tiledrain2 double precision, tpload_streambank2 double precision, tpload_subsurface2 double precision,
+  tpload_pointsource2 double precision, tpload_septics2 double precision, tnload_hp2 double precision, tnload_crop2 double precision, tnload_wooded2 double precision, tnload_open2 double precision, tnload_barren2 double precision,
+  tnload_ldm2 double precision, tnload_mdm2 double precision, tnload_hdm2 double precision, tnload_otherup2 double precision, tnload_farman2 double precision, tnload_tiledrain2 double precision, tnload_streambank2 double precision,
+  tnload_subsurface2 double precision, tnload_pointsource2 double precision, tnload_septics2 double precision, tssload_hp2 double precision, tssload_crop2 double precision, tssload_wooded2 double precision, tssload_open2 double precision,
+  tssload_barren2 double precision, tssload_ldm2 double precision, tssload_mdm2 double precision, tssload_hdm2 double precision, tssload_otherup2 double precision, tssload_tiledrain2 double precision, tssload_streambank2 double precision,
+
+
+  tpconc_hp2 double precision, tnconc_hp2 double precision, tssconc_hp2 double precision,
+  tpconc_Crop2  double precision, tnconc_Crop2  double precision, tssconc_Crop2  double precision,
+  tpconc_Wooded2  double precision, tnconc_Wooded2  double precision, tssconc_Wooded2  double precision,
+  tpconc_Open2  double precision, tnconc_Open2  double precision, tssconc_Open2  double precision,
+  tpconc_barren2  double precision, tnconc_barren2  double precision, tssconc_barren2  double precision,
+  tpconc_ldm2  double precision, tnconc_ldm2  double precision, tssconc_ldm2  double precision,
+  tpconc_MDM2  double precision, tnconc_MDM2  double precision, tssconc_MDM2  double precision,
+  tpconc_HDM2  double precision, tnconc_HDM2  double precision, tssconc_HDM2  double precision,
+  tpconc_OtherUp2  double precision, tnconc_OtherUp2  double precision, tssconc_OtherUp2  double precision,
+  tpconc_FarmAn2  double precision, tnconc_FarmAn2  double precision,
+  tpconc_tiledrain2  double precision, tnconc_tiledrain2  double precision, tssconc_tiledrain2  double precision,
+  tpconc_streambank2  double precision, tnconc_streambank2  double precision, tssconc_streambank2  double precision,
+  tpconc_subsurface2  double precision, tnconc_subsurface2  double precision,
+  tpconc_septics2  double precision, tnconc_septics2  double precision,
+  tpconc_ptsource2 double precision, tnconc_ptsource2 double precision,
+
+  maflowv2 double precision
+
+) AS
 $BODY$
 
 BEGIN
 
 Drop Table If Exists nhdplus_out,huc12_out;
 
--- Create Temporary Output Tables 
-CREATE TEMP TABLE huc12_out 
+-- Create Temporary Output Tables
+CREATE TEMP TABLE huc12_out
 (
 huc12 character varying(12)not null,
 tpload_hp float Default 0,
@@ -145,7 +170,7 @@ CONSTRAINT huc12_tmp_primary  PRIMARY KEY (huc12)
 ) ON COMMIT DROP;
 
 
-CREATE TEMP TABLE nhdplus_out 
+CREATE TEMP TABLE nhdplus_out
 (
 comid integer not null,
 hydroseq integer not null,
@@ -169,7 +194,7 @@ tss_conc  float Default null,
 totdasqkm float Default 0,
 areasqkm float Default 0,
 
--- ADD IN ALL THE LOAD SOURCES BY COMID
+-- CHANGED 04-2022 ADD IN ALL THE LOAD SOURCES BY COMID
 tpload_hp  float Default 0,
 tpload_Crop  float Default 0,
 tpload_Wooded  float Default 0,
@@ -258,13 +283,33 @@ tssload_otherup_ups  float Default 0,
 tssload_tiledrain_ups  float Default 0,
 tssload_streambank_ups  float Default 0,
 
+-- ADDED 10-2022
+
+  tpconc_hp float Default null, tnconc_hp float Default null, tssconc_hp float Default null,
+  tpconc_Crop  float Default null, tnconc_Crop  float Default null, tssconc_Crop  float Default null,
+  tpconc_Wooded  float Default null, tnconc_Wooded  float Default null, tssconc_Wooded  float Default null,
+  tpconc_Open  float Default null, tnconc_Open  float Default null, tssconc_Open  float Default null,
+  tpconc_barren  float Default null, tnconc_barren  float Default null, tssconc_barren  float Default null,
+  tpconc_ldm  float Default null, tnconc_ldm  float Default null, tssconc_ldm  float Default null,
+  tpconc_MDM  float Default null, tnconc_MDM  float Default null, tssconc_MDM  float Default null,
+  tpconc_HDM  float Default null, tnconc_HDM  float Default null, tssconc_HDM  float Default null,
+  tpconc_OtherUp  float Default null, tnconc_OtherUp  float Default null, tssconc_OtherUp  float Default null,
+  tpconc_FarmAn  float Default null, tnconc_FarmAn  float Default null,
+  tpconc_tiledrain  float Default null, tnconc_tiledrain  float Default null, tssconc_tiledrain  float Default null,
+  tpconc_streambank  float Default null, tnconc_streambank  float Default null, tssconc_streambank  float Default null,
+  tpconc_subsurface  float Default null, tnconc_subsurface  float Default null,
+  tpconc_septics  float Default null, tnconc_septics  float Default null,
+  tpconc_ptsource float Default null, tnconc_ptsource float Default null,
+
+maflowv                float Default null,
+
 CONSTRAINT nhdplus_tmp_primary PRIMARY KEY (comid)
 ) ON COMMIT DROP;
 
 set enable_seqscan = off;
 
 -- Insert
-Insert into huc12_out 
+Insert into huc12_out
 (huc12,
 tpload_hp,
 tpload_Crop,
@@ -306,10 +351,10 @@ tssload_mdm,
 tssload_hdm,
 tssload_otherup,
 tssload_tiledrain,
-tssload_streambank 
+tssload_streambank
 
 )
-Select unnest(huc12a) as huc12a, 
+Select unnest(huc12a) as huc12a,
 unnest(                tpload_hp),
 unnest(                tpload_Crop),
 unnest(                tpload_Wooded),
@@ -353,7 +398,7 @@ unnest(                tssload_tiledrain),
 unnest(                tssload_streambank )
 ;
 
-Insert into nhdplus_out 
+Insert into nhdplus_out
 (
 comid
 ,hydroseq
@@ -406,65 +451,10 @@ tssload_mdm,
 tssload_hdm,
 tssload_otherup,
 tssload_tiledrain,
-tssload_streambank 
+tssload_streambank
 
 )
-
-select comid, hydroseq, d_comid, ShedAreaDrainLake
--- IMPLEMENT IN HERE IF WE DO NOT WANT NEGATIVE NUMBERS, CHANGE THE 100s, 0.3s IN THE CONDITIONALS
-, case
-	when coalesce(rest.tp_reduced_kg, 0.0) > (tploadrate_total * 100) then ((tploadrate_total * 0.3) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) )))
-	else ((tploadrate_total - coalesce(rest.tp_reduced_kg, 0.0)) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) ))) end
-, case
-	when coalesce(rest.tn_reduced_kg, 0.0) > (tnloadrate_total * 100) then ((tnloadrate_total * 0.3) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )))
-	else ((tnloadrate_total - coalesce(rest.tn_reduced_kg, 0.0)) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) ))) end
-, case
-	when coalesce(rest.tss_reduced_kg, 0.0) > (tssloadrate_total * 100) then ((tssloadrate_total * 0.3) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )))
-	else ((tssloadrate_total - coalesce(rest.tss_reduced_kg, 0.0)) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) ))) end
-,	t1.tpload_hp
-,	t1.tpload_Crop
-,	t1.tpload_Wooded
-,	t1.tpload_Open
-,	t1.tpload_barren
-,	t1.tpload_ldm
-,	t1.tpload_MDM
-,	t1.tpload_HDM
-,	t1.tpload_OtherUp
-,	t1.tpload_FarmAn
-,	t1.tpload_tiledrain
-,	t1.tpload_streambank
-,	t1.tpload_subsurface
-,	t1.tpload_pointsource
-,	t1.tpload_septics
-,	t1.tnload_hp
-,	t1.tnload_Crop
-,	t1.tnload_Wooded
-,	t1.tnload_Open
-,	t1.tnload_barren
-,	t1.tnload_ldm
-,	t1.tnload_MDM
-,	t1.tnload_HDM
-,	t1.tnload_OtherUp
-,	t1.tnload_FarmAn
-,	t1.tnload_tiledrain
-,	t1.tnload_streambank
-,	t1.tnload_subsurface
-,	t1.tnload_pointsource
-,	t1.tnload_septics
-,	t1.tssload_hp
-,	t1.tssload_Crop
-,	t1.tssload_Wooded
-,	t1.tssload_Open
-,	t1.tssload_barren
-,	t1.tssload_ldm
-,	t1.tssload_MDM
-,	t1.tssload_HDM
-,	t1.tssload_OtherUp
-,	t1.tssload_tiledrain
-,	t1.tssload_streambank
-
-from (
-Select 
+Select
 x.comid
 ,rte2.hydroseq
 ,rte1.d_comid
@@ -479,7 +469,7 @@ x.comid
 
 	-- Changd based on call with BME 10.9.18
 	(              coalesce(huc12_out.tpload_ldm,0)         *             coalesce(p_urblo2011catcomid_x_huc12,0)) +
-	
+
 	(              coalesce(huc12_out.tpload_MDM,0)         *             coalesce(p_urbmd2011catcomid_x_huc12,0)) +
 	(              coalesce(huc12_out.tpload_HDM,0)         *             coalesce(p_urbhi2011catcomid_x_huc12,0)) +
 	(              coalesce(huc12_out.tpload_OtherUp,0)     *             coalesce(p_all_wetland2011cat_x_huc12,0)) +
@@ -489,15 +479,14 @@ x.comid
 
 -- Stream Bank Is Special
 -- Added this 10.2.18 based on conversation with BME
--- Smaller models have lower values for streambank	
+-- Smaller models have lower values for streambank
 	(              coalesce((huc12_out.tpload_streambank*1.00),0)  *             coalesce(p_catarea_x_huc12,0) * 0.4 ) +
 	(              coalesce((huc12_out.tpload_streambank*1.00),0)  *             coalesce(p_imparea_x_huc12,0) * 0.6 ) +
 	-- add in 5_22_18
 	(              coalesce(huc12_out.tpload_subsurface,0)  *             coalesce(p_tnsumgrnd_x_huc12,0)) +
 	(              coalesce(huc12_out.tpload_pointsource,0) *             coalesce(p_pt_kgn_yr_x_huc12,0)) +
-	(              coalesce(huc12_out.tpload_septics,0)     *             coalesce(p_all_lowdensity2011cat_x_huc12,0)) 
-) --*   ( 1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) )) 
-as tploadrate_total
+	(              coalesce(huc12_out.tpload_septics,0)     *             coalesce(p_all_lowdensity2011cat_x_huc12,0))
+) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) ))
 
 ,
 (
@@ -509,7 +498,7 @@ as tploadrate_total
 --	(              coalesce(huc12_out.tnload_ldm,0)         *             coalesce(p_all_lowdensity2011cat_x_huc12,0)) +
 -- Changd based on call with BME 10.9.18
 	(              coalesce(huc12_out.tnload_ldm,0)         *             coalesce(p_urblo2011catcomid_x_huc12,0)) +
-	
+
 	(              coalesce(huc12_out.tnload_MDM,0)         *             coalesce(p_urbmd2011catcomid_x_huc12,0)) +
 	(              coalesce(huc12_out.tnload_HDM,0)         *             coalesce(p_urbhi2011catcomid_x_huc12,0)) +
 	(              coalesce(huc12_out.tnload_OtherUp,0)     *             coalesce(p_all_wetland2011cat_x_huc12,0)) +
@@ -520,15 +509,14 @@ as tploadrate_total
 
 -- Stream Bank Is Special
 -- Added this 10.2.18 based on conversation with BME
--- Smaller models have lower values for streambank		
+-- Smaller models have lower values for streambank
 	(              coalesce((huc12_out.tnload_streambank*1.00),0)  *             coalesce(p_catarea_x_huc12,0) * 0.4 ) +
 	(              coalesce((huc12_out.tnload_streambank*1.00),0)  *             coalesce(p_imparea_x_huc12,0) * 0.6 ) +
 	-- add in 5_22_18
 	(              coalesce(huc12_out.tnload_subsurface,0)  *             coalesce(p_tnsumgrnd_x_huc12,0)) +
 	(              coalesce(huc12_out.tnload_pointsource,0) *             coalesce(p_pt_kgn_yr_x_huc12,0)) +
-	(              coalesce(huc12_out.tnload_septics,0)     *             coalesce(p_all_lowdensity2011cat_x_huc12,0)) 
-) --*   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) ))
-as tnloadrate_total
+	(              coalesce(huc12_out.tnload_septics,0)     *             coalesce(p_all_lowdensity2011cat_x_huc12,0))
+) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) ))
 
 
 ,
@@ -541,7 +529,7 @@ as tnloadrate_total
 --	(              coalesce(huc12_out.tssload_ldm,0)         *             coalesce(p_all_lowdensity2011cat_x_huc12,0)) +
 -- Changd based on call with BME 10.9.18
 	(              coalesce(huc12_out.tssload_ldm,0)         *             coalesce(p_urblo2011catcomid_x_huc12,0)) +
-		
+
 	(              coalesce(huc12_out.tssload_MDM,0)         *             coalesce(p_urbmd2011catcomid_x_huc12,0)) +
 	(              coalesce(huc12_out.tssload_HDM,0)         *             coalesce(p_urbhi2011catcomid_x_huc12,0)) +
 	(              coalesce(huc12_out.tssload_OtherUp,0)     *             coalesce(p_all_wetland2011cat_x_huc12,0)) +
@@ -549,18 +537,17 @@ as tnloadrate_total
 	--(              coalesce(huc12_out.tssload_tiledrain,0)   *             coalesce(p_catarea_x_huc12,0)) +
 	-- Changd based on call with BME 10.9.18
 	(              coalesce(huc12_out.tssload_tiledrain,0)   *             coalesce(p_urbop2011catcomid_x_huc12,0)) +
-	
+
 
 -- Stream Bank Is Special
 -- Added this 10.2.18 based on conversation with BME
--- Smaller models have lower values for streambank		
+-- Smaller models have lower values for streambank
 	(              coalesce((huc12_out.tssload_streambank * 1.00),0)  *             coalesce(p_catarea_x_huc12,0) * 0.4 ) +
-	(              coalesce((huc12_out.tssload_streambank * 1.00),0)  *             coalesce(p_imparea_x_huc12,0) * 0.6 ) 
+	(              coalesce((huc12_out.tssload_streambank * 1.00),0)  *             coalesce(p_imparea_x_huc12,0) * 0.6 )
 	--(              coalesce(huc12_out.tssload_subsurface,0)  *             coalesce(p_catarea_x_huc12,0)) +
 	--(              coalesce(huc12_out.tssload_pointsource,0) *             coalesce(p_catarea_x_huc12,0)) +
-	--(              coalesce(huc12_out.tssload_septics,0)     *             coalesce(p_catarea_x_huc12,0)) 
-)-- *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) ))
-as tssloadrate_total
+	--(              coalesce(huc12_out.tssload_septics,0)     *             coalesce(p_catarea_x_huc12,0))
+) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) ))
 
 -- ADD IN ALL THE LOAD SOURCES BY COMID
 -- TP
@@ -570,7 +557,7 @@ as tssloadrate_total
 ,	(              coalesce(huc12_out.tpload_Open,0)        *             coalesce(p_grs2011catcomid_x_huc12)) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) )) as tpload_Open
 ,	(              coalesce(huc12_out.tpload_barren,0)      *             coalesce(p_bl2011catcomid_x_huc12,0)  ) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) )) as tpload_barren
 ,	(              coalesce(huc12_out.tpload_ldm,0)         *             coalesce(p_urblo2011catcomid_x_huc12,0)) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) )) as tpload_ldm
-	
+
 ,	(              coalesce(huc12_out.tpload_MDM,0)         *             coalesce(p_urbmd2011catcomid_x_huc12,0)) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) )) as tpload_MDM
 ,	(              coalesce(huc12_out.tpload_HDM,0)         *             coalesce(p_urbhi2011catcomid_x_huc12,0)) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) )) as tpload_HDM
 ,	(              coalesce(huc12_out.tpload_OtherUp,0)     *             coalesce(p_all_wetland2011cat_x_huc12,0)) *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) )) as tpload_OtherUp
@@ -591,7 +578,7 @@ as tssloadrate_total
 ,	(              coalesce(huc12_out.tnload_Open,0)        *             coalesce(p_grs2011catcomid_x_huc12))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )) as tnload_Open
 ,	(              coalesce(huc12_out.tnload_barren,0)      *             coalesce(p_bl2011catcomid_x_huc12,0)  )  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )) as tnload_barren
 ,	(              coalesce(huc12_out.tnload_ldm,0)         *             coalesce(p_urblo2011catcomid_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )) as tnload_ldm
-	
+
 ,	(              coalesce(huc12_out.tnload_MDM,0)         *             coalesce(p_urbmd2011catcomid_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )) as tnload_MDM
 ,	(              coalesce(huc12_out.tnload_HDM,0)         *             coalesce(p_urbhi2011catcomid_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )) as tnload_HDM
 ,	(              coalesce(huc12_out.tnload_OtherUp,0)     *             coalesce(p_all_wetland2011cat_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )) as tnload_OtherUp
@@ -604,7 +591,7 @@ as tssloadrate_total
 ,	(              coalesce(huc12_out.tnload_subsurface,0)  *             coalesce(p_tnsumgrnd_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )) as tnload_subsurface
 ,	(              coalesce(huc12_out.tnload_pointsource,0) *             coalesce(p_pt_kgn_yr_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )) as tnload_pointsource
 ,	(              coalesce(huc12_out.tnload_septics,0)     *             coalesce(p_all_lowdensity2011cat_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )) as tnload_septics
-	
+
 -- TSS
 ,	(              coalesce(huc12_out.tssload_hp,0)          *             coalesce(p_hay2011catcomid_x_huc12,0) )  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_hp
 ,	(              coalesce(huc12_out.tssload_Crop,0)        *             coalesce(p_crop2011catcomid_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_Crop
@@ -612,22 +599,22 @@ as tssloadrate_total
 ,	(              coalesce(huc12_out.tssload_Open,0)        *             coalesce(p_grs2011catcomid_x_huc12))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_Open
 ,	(              coalesce(huc12_out.tssload_barren,0)      *             coalesce(p_bl2011catcomid_x_huc12,0)  )  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_barren
 ,	(              coalesce(huc12_out.tssload_ldm,0)         *             coalesce(p_urblo2011catcomid_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_ldm
-		
+
 ,	(              coalesce(huc12_out.tssload_MDM,0)         *             coalesce(p_urbmd2011catcomid_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_MDM
 ,	(              coalesce(huc12_out.tssload_HDM,0)         *             coalesce(p_urbhi2011catcomid_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_HDM
 ,	(              coalesce(huc12_out.tssload_OtherUp,0)     *             coalesce(p_all_wetland2011cat_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_OtherUp
 ,	(              coalesce(huc12_out.tssload_tiledrain,0)   *             coalesce(p_urbop2011catcomid_x_huc12,0))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_tiledrain
-		
+
 ,	((              coalesce((huc12_out.tssload_streambank * 1.00),0)  *             coalesce(p_catarea_x_huc12,0) * 0.4 ) +
 	(              coalesce((huc12_out.tssload_streambank * 1.00),0)  *             coalesce(p_imparea_x_huc12,0) * 0.6 ))  *   ( 1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_streambank
 
-From 
-                wikiwtershed.nhdplus_x_huc12 x 
-                
-                join 
-                huc12_out 
+From
+                wikiwtershed.nhdplus_x_huc12 x
+
+                join
+                huc12_out
                 on x.huc12 = huc12_out.huc12
-                
+
                 join
                 wikiwtershed.cache_nhdcoefs_2019 cfs
                 on x.comid = cfs.comid
@@ -635,28 +622,18 @@ From
                 join
                 wikiwtershed.comid_routing rte1
                 ON x.comid=rte1.comid
-                
+
                 join
                 wikiwtershed.nhdplus_stream_nsidx rte2
-                ON x.comid=rte2.comid
-) as t1
-left join (
-			select distinct comid_rest
-			,sum(tn_reduced_kg) OVER (PARTITION BY comid_rest) as tn_reduced_kg
-			,sum(tp_reduced_kg) OVER (PARTITION BY comid_rest) as tp_reduced_kg
-			,sum(tss_reduced_kg) OVER (PARTITION BY comid_rest) as tss_reduced_kg
-			from datapolassess.fd_api_restoration_lbsreduced_comid
-			where source = ANY (restoration_sources::text[]) --('Delaware River Operational Fund', 'Delaware Watershed Conservation Fund', 'Delaware River Restoration Fund', 'PADEP', 'NJDEP')
-) as rest
-on t1.comid = rest.comid_rest
-;
+                ON x.comid=rte2.comid;
+
 
 
 -- Set the upstream equal to the total before you start
 
 
-update nhdplus_out 
-set 
+update nhdplus_out
+set
 	tnloadrate_total_ups = tnloadrate_total,
 	tploadrate_total_ups = tploadrate_total,
 	tssloadrate_total_ups = tssloadrate_total,
@@ -711,7 +688,7 @@ set
 
 
 Update nhdplus_out as old
-Set   
+Set
      areasqkm 	= new.areasqkm
 From wikiwtershed.nhdplus_stream_nsidx new
 where old.comid = new.comid;
@@ -719,7 +696,7 @@ where old.comid = new.comid;
 --
 
 Update nhdplus_out as old
-Set   
+Set
      totdasqkm 	= new.totdasqkm
 From wikiwtershed.nhdplus_totdasqkm new
 where old.comid = new.comid;
@@ -727,15 +704,15 @@ where old.comid = new.comid;
 --
 
 
- 
-do 
-$$ 
-declare _r record; 
-begin 
+
+do
+$$
+declare _r record;
+begin
   for _r in ( select * from nhdplus_out order by hydroseq desc ) loop
-    -- Push Down  
+    -- Push Down
     Update nhdplus_out old
-	Set 
+	Set
 		 tnloadrate_total_ups = (  tnloadrate_total_ups + Coalesce( tn_plus,0) )
 		,tploadrate_total_ups = (  tploadrate_total_ups + Coalesce( tp_plus,0) )
 		,tssloadrate_total_ups= ( tssloadrate_total_ups + Coalesce(tss_plus,0) )
@@ -788,8 +765,8 @@ begin
 
 
 		,areasqkm	  = old.areasqkm + new.areasqkm
-    From ( 
-		Select 
+    From (
+		Select
 			 tnloadrate_total_ups  * (1 - ( (ShedAreaDrainLake/100) * (select  tn from wikiwtershed.retetion_factors) )) as tn_plus
 			,tploadrate_total_ups  * (1 - ( (ShedAreaDrainLake/100) * (select  tp from wikiwtershed.retetion_factors) )) as tp_plus
 			,tssloadrate_total_ups * (1 - ( (ShedAreaDrainLake/100) * (select tss from wikiwtershed.retetion_factors) )) as tss_plus
@@ -841,51 +818,114 @@ begin
 			,tssload_streambank   * (1 - ( (ShedAreaDrainLake/100) * (select  tss from wikiwtershed.retetion_factors) )) as tssload_streambank_plus
 
 	                ,areasqkm
-		From nhdplus_out 
+		From nhdplus_out
 		where comid = _r.comid
 	 ) new
-    Where old.comid = _r.d_comid; 
+    Where old.comid = _r.d_comid;
 
-    
-  end loop; 
-end; 
+
+  end loop;
+end;
 $$
 ;
- 
+
 
 -- convert to cubic feet multiple times seconds in a year
 -- 31557600 (365.25*24*60*60)
 -- 28.3168 liters in a cubic foot
 -- 1000000 mg in kg
 
-Update 
+Update
 	nhdplus_out old
-	Set 
-		
+	Set
+
 		tp_conc  = ( tploadrate_total_ups  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
 		tn_conc  = ( tnloadrate_total_ups  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
-		tss_conc = ( tssloadrate_total_ups * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 )
+		tss_conc = ( tssloadrate_total_ups * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_hp = ( coalesce(tpload_hp_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_hp = ( coalesce(tnload_hp_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_hp = ( coalesce(tssload_hp_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_Crop  = ( coalesce(tpload_crop_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_Crop  = ( coalesce(tnload_crop_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_Crop  = ( coalesce(tssload_crop_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_Wooded  = ( coalesce(tpload_wooded_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_Wooded  = ( coalesce(tnload_wooded_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_Wooded  = ( coalesce(tssload_wooded_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_Open  = ( coalesce(tpload_open_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_Open  = ( coalesce(tnload_open_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_Open  = ( coalesce(tssload_open_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_barren  = ( coalesce(tpload_barren_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_barren  = ( coalesce(tnload_barren_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_barren  = ( coalesce(tssload_barren_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_ldm  = ( coalesce(tpload_ldm_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_ldm  = ( coalesce(tnload_ldm_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_ldm  = ( coalesce(tssload_ldm_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_MDM  = ( coalesce(tpload_mdm_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_MDM  = ( coalesce(tnload_mdm_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_MDM  = ( coalesce(tssload_mdm_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_HDM  = ( coalesce(tpload_hdm_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_HDM  = ( coalesce(tnload_hdm_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_HDM  = ( coalesce(tssload_hdm_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_OtherUp  = ( coalesce(tpload_otherup_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_OtherUp  = ( coalesce(tnload_otherup_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_OtherUp  = ( coalesce(tssload_otherup_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_FarmAn  = ( coalesce(tpload_FarmAn_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_FarmAn  = ( coalesce(tnload_FarmAn_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_tiledrain  = ( coalesce(tpload_tiledrain_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_tiledrain  = ( coalesce(tnload_tiledrain_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_tiledrain  = ( coalesce(tssload_tiledrain_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_streambank  = ( coalesce(tpload_streambank_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_streambank  = ( coalesce(tnload_streambank_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tssconc_streambank  = ( coalesce(tssload_streambank_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_subsurface  = ( coalesce(tpload_subsurface_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_subsurface  = ( coalesce(tnload_subsurface_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+	  tpconc_septics  = ( coalesce(tpload_septics_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+	  tnconc_septics  = ( coalesce(tnload_septics_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+
+		tnconc_ptsource = ( coalesce(tpload_pointsource_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 ),
+		tpconc_ptsource = ( coalesce(tnload_pointsource_ups,0.0)  * 1000000 ) / ( new.qe_ma * 31557600 * 28.3168 )
+
 From wikiwtershed.cache_nhdcoefs_2019 new
-Where new.comid = old.comid 
+Where new.comid = old.comid
 	And
 		--( totdasqkm between (areasqkm * 0.95) And (areasqkm * 1.05) )
-		( totdasqkm > (areasqkm * 0.95)) And ( totdasqkm < (areasqkm * 1.05)) 
+		( totdasqkm > (areasqkm * 0.95)) And ( totdasqkm < (areasqkm * 1.05))
 	And
 		new.qe_ma > 0;
 		-- This gives us a 5 percent fudge factor on the upstream s
 set enable_seqscan = on;
 
+update
+	nhdplus_out old
+	set maflowv = new.qe_ma
+From wikiwtershed.cache_nhdcoefs_2019 new
+Where new.comid = old.comid ;
+
 -- Check values For Area
 
-Return Query 
-Select 
-	comid, 
-	tploadrate_total,  tp_conc, 
+Return Query
+Select
+	comid,
+	tploadrate_total,  tp_conc,
 	--totdasqkm, areasqkm,
-	
-	tnloadrate_total,  tn_conc, 
+
+	tnloadrate_total,  tn_conc,
 	tssloadrate_total, tss_conc,
-	
+
 	-- ADD IN ALL THE LOAD SOURCES BY COMID
 
 	nhdplus_out.tpload_hp,
@@ -930,7 +970,52 @@ Select
 	nhdplus_out.tssload_hdm,
 	nhdplus_out.tssload_otherup,
 	nhdplus_out.tssload_tiledrain,
-	nhdplus_out.tssload_streambank 
+	nhdplus_out.tssload_streambank,
+
+	-- ADD In New Columns
+  nhdplus_out.tpconc_hp,
+  nhdplus_out.tnconc_hp,
+  nhdplus_out.tssconc_hp,
+  nhdplus_out.tpconc_Crop ,
+  nhdplus_out.tnconc_Crop ,
+  nhdplus_out.tssconc_Crop ,
+  nhdplus_out.tpconc_Wooded ,
+  nhdplus_out.tnconc_Wooded ,
+  nhdplus_out.tssconc_Wooded ,
+  nhdplus_out.tpconc_Open ,
+  nhdplus_out.tnconc_Open ,
+  nhdplus_out.tssconc_Open ,
+  nhdplus_out.tpconc_barren ,
+  nhdplus_out.tnconc_barren ,
+  nhdplus_out.tssconc_barren ,
+  nhdplus_out.tpconc_ldm ,
+  nhdplus_out.tnconc_ldm ,
+  nhdplus_out.tssconc_ldm ,
+  nhdplus_out.tpconc_MDM ,
+  nhdplus_out.tnconc_MDM ,
+  nhdplus_out.tssconc_MDM ,
+  nhdplus_out.tpconc_HDM ,
+  nhdplus_out.tnconc_HDM ,
+  nhdplus_out.tssconc_HDM ,
+  nhdplus_out.tpconc_OtherUp ,
+  nhdplus_out.tnconc_OtherUp ,
+  nhdplus_out.tssconc_OtherUp ,
+  nhdplus_out.tpconc_FarmAn ,
+  nhdplus_out.tnconc_FarmAn ,
+  nhdplus_out.tpconc_tiledrain ,
+  nhdplus_out.tnconc_tiledrain ,
+  nhdplus_out.tssconc_tiledrain ,
+  nhdplus_out.tpconc_streambank ,
+  nhdplus_out.tnconc_streambank ,
+  nhdplus_out.tssconc_streambank ,
+  nhdplus_out.tpconc_subsurface ,
+  nhdplus_out.tnconc_subsurface ,
+  nhdplus_out.tpconc_septics ,
+  nhdplus_out.tnconc_septics ,
+  nhdplus_out.tpconc_ptsource,
+  nhdplus_out.tnconc_ptsource,
+
+	nhdplus_out.maflowv
 
 From nhdplus_out;
 
@@ -939,9 +1024,9 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100
   ROWS 1000;
-ALTER FUNCTION wikiwtershed.srat_nhd_nlcd2019_restoration(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[])
+ALTER FUNCTION wikiwtershed.srat_nhd_nlcd2019(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[])
   OWNER TO drwiadmin;
-GRANT EXECUTE ON FUNCTION wikiwtershed.srat_nhd_nlcd2019_restoration(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[]) TO public;
-GRANT EXECUTE ON FUNCTION wikiwtershed.srat_nhd_nlcd2019_restoration(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[]) TO drwiadmin;
-GRANT EXECUTE ON FUNCTION wikiwtershed.srat_nhd_nlcd2019_restoration(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[]) TO ms_select;
-GRANT EXECUTE ON FUNCTION wikiwtershed.srat_nhd_nlcd2019_restoration(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[]) TO srat_select;
+GRANT EXECUTE ON FUNCTION wikiwtershed.srat_nhd_nlcd2019(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[]) TO public;
+GRANT EXECUTE ON FUNCTION wikiwtershed.srat_nhd_nlcd2019(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[]) TO drwiadmin;
+GRANT EXECUTE ON FUNCTION wikiwtershed.srat_nhd_nlcd2019(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[]) TO ms_select;
+GRANT EXECUTE ON FUNCTION wikiwtershed.srat_nhd_nlcd2019(character varying[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[], double precision[]) TO srat_select;

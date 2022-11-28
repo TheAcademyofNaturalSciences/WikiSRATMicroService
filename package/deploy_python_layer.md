@@ -2,7 +2,7 @@
 #### So, this process is Dockerized
 #### Refer to files in ./package (Dockerfile, requirements.txt, docker_install.sh, runner.sh)
 #### code source: https://www.youtube.com/watch?v=jXjMrWCpaI8&ab_channel=FelixYu
-#### Make sure you have Docker Desktop installed (Windows, Mac)
+#### Make sure you have Docker Desktop installed (Windows, Mac) and that it is running
 #### Update ./package requirements.txt as necessary
 
 #### RUN IN UBUNTU SUBSYSTEM (ON WINDOWS) OR FROM MAC TERMINAL
